@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Shukruth-Gowda/MyMavenSeleniumApp03.git'
+                git branch: 'master', url: 'https://github.com/ShruthiBGowda/MyMavenApp.git'
             }
         }
 
@@ -17,18 +17,23 @@ pipeline {
             }
         }
 
-        stage('Archive') {
+        stage('Test') {
             steps {
-                archieveArtifacts artifacts 'target/*.war', fingerprint:true
+                sh 'mvn test'  // Run unit tests
             }
         }
 
- stage('Deploy') {
+        
+        
+       
+        stage('Run Application') {
             steps {
-                sh 'mvn clean package'  
+                // Start the JAR application
+                sh 'java -jar target/MyMavenApp-1.0-SNAPSHOT.jar'
             }
-        }    
-              
+        }
+
+        
     }
 
     post {
